@@ -12,6 +12,10 @@ root.title("HooHacks24")
 previousChats = list()
 previousChatsBtns = list()
 
+root.columnconfigure(1, weight=1)
+root.columnconfigure(2, weight=2)
+root.columnconfigure(3, weight=1)
+
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
@@ -104,7 +108,7 @@ def printOutput(text: str, clear: bool) -> None:
         insert_text(0, short_text)
         btn.configure(text="Show More", command=show_long_text)  # Change the button text and command back
 
-    btn = ctk.CTkButton(root, text="Less concise explanation", command=show_long_text)
+    btn = ctk.CTkButton(root, text="Less concise explanation", command=show_long_text, font=("Franklin Gothic Heavy", 24))
     btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
 
 
