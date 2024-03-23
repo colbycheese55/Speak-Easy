@@ -5,30 +5,35 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
-YOUR_API_KEY = os.environ.get("PERPLEX_API_KEY")
+def make_perplexity_call(language, phrase):
 
-messages = [
-    {
-        "role": "system",
-        "content": (
-            "You are an artificial intelligence assistant and you need to "
-            "engage in a helpful, detailed, polite conversation with a user."
-        ),
-    },
-    {
-        "role": "user",
-        "content": (
-            "What does my boss mean when he says lets not move the goal posts?"
-        ),
-    },
-]
+    question = "Please explain what the phrase " + phrase + " means. First give me a brief explanation, no more than a sentence. Then give a more elaborate description. Separate these two descriptions with the text 404_404. Ensure these descriptions are in " + language + "."
 
-client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+    YOUR_API_KEY = os.environ.get("PERPLEX_API_KEY")
 
-# chat completion without streaming
-response = client.chat.completions.create(
-    model="mistral-7b-instruct",
-    messages=messages,
-)
-print(response)
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are an artificial intelligence assistant and you need to "
+                "engage in a helpful, detailed, polite conversation with a user."
+            ),
+        },
+        {
+            "role": "user",
+            "content": (
+                question
+            ),
+        },
+    ]
+
+    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+
+    # chat completion without streaming
+    response = client.chat.completions.create(
+        model="mistral-7b-instruct",
+        messages=messages,
+    )
+    
+    return response
 
