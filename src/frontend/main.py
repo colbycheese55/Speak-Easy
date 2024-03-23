@@ -1,4 +1,10 @@
 import customtkinter as ctk
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
+import perspective
 
 
 root = ctk.CTk()
@@ -34,8 +40,9 @@ def processInput(*_) -> None:
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
     #summary = perplexitySummary(input)
+    summaries = perspective.make_perplexity_call("english", input)
     summary = "stuff"
-    printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary}")
+    printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summaries[0]}")
 
 entry.bind("<Return>", processInput)
 
