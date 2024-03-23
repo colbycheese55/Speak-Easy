@@ -8,9 +8,7 @@ load_dotenv()
 def make_perplexity_call(language, phrase):
 
     question = "Please explain what the phrase " + phrase + " means. First give me a brief explanation, no more than a sentence. Then give a more elaborate description. Separate these two descriptions with the text 404_404. Ensure these descriptions are in " + language + "."
-
     YOUR_API_KEY = os.environ.get("PERPLEX_API_KEY")
-
     messages = [
         {
             "role": "system",
@@ -34,6 +32,9 @@ def make_perplexity_call(language, phrase):
         model="mistral-7b-instruct",
         messages=messages,
     )
+
+    print(response)
+    responses = response.strip().split("404_404").strip()
     
-    return response
+    return responses
 
