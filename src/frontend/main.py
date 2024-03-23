@@ -14,26 +14,28 @@ previousChatsBtns = list()
 
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
-leftPanel.grid(row=1, rowspan=5, column=1, columnspan=1, padx=40, pady=40, sticky="n")
+leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
 
 historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Gothic Heavy", 24), width=300)
+historyLabel.grid(row=1, rowspan=1, sticky="n")
+
+for i in range(10):
+    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"Chat {i+1}", state="disabled")
+    btn.grid(row=i+2, pady=15)
+    previousChatsBtns.append(btn)
 
 def updateChatListing() -> None:
-    if previousChatsBtns is not None:
-        for btn in previousChatsBtns:
-            btn.grid_forget()
-    historyLabel.grid(row=1, rowspan=1, sticky="n")
     for i in range(len(previousChats)):
         cmd = lambda text=previousChats[i][1]: printOutput(text, True)
-        btn = ctk.CTkButton(leftPanel, text=previousChats[i][0], font=("Courier New", 16), width = 180, height=30, command=cmd)
-        btn.grid(row=(i+2), rowspan=1, sticky="n", pady=20)
-        previousChatsBtns.append(btn)
+        previousChatsBtns[i].configure(state="normal", text=previousChats[i][0], command=cmd)
+    if len(previousChats) >= 10:
+        previousChats.pop()
 
 
 
 # Right Panel
 rightPanel = ctk.CTkFrame(root, width=300, height=700)
-rightPanel.grid(row=1, rowspan=5, column=3, columnspan=1, padx=40, pady=40)
+rightPanel.grid(row=1, rowspan=10, column=3, columnspan=1, padx=40, pady=40)
 
 
 labelIn = ctk.CTkLabel(rightPanel, text="Input Language", font=("Franklin Gothic Heavy", 24), pady=10)
@@ -50,7 +52,7 @@ _ = ctk.CTkLabel(rightPanel, text="", width=300, height=500)
 _.grid(row=5, rowspan=1)
 
 # Middle Panel
-entry = ctk.CTkTextbox(root, width=400, height=80, wrap="word", font=("Algerian", 20, "italic"))
+entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=("Algerian", 20, "italic"))
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
@@ -64,15 +66,16 @@ def processInput(*_) -> None:
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
 
-    input = entry.get("1.0", ctk.END)
+    input = entry.get("1.0", ctk.END).replace("\n", "")
     #attributes = sentimentAnalysis(input)
     attributes = {"stuff": "things"}
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
-    summary = perplexity.make_perplexity_call("english", input)
+    language = comboboxOut.get()
+    summary = perplexity.make_perplexity_call(language, input)
     out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
-    previousChats.insert(1, (f"{input[:10]}...", out))
+    previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
 
 entry.bind("<Return>", processInput)
