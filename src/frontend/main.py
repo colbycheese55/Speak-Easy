@@ -84,8 +84,20 @@ output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16), w
 def printOutput(text: str, clear: bool) -> None:
     if clear:
         output.delete("1.0", ctk.END)
-    for i in range(len(text)):
-        root.after(5 * i, lambda char=text[i]: output.insert(ctk.END, char))
+    short_text, long_text = text.split("\n\nLonger Description: \n", 1)
+    def insert_text(i, text):
+        if i < len(text):
+            output.insert(ctk.END, text[i])
+            root.after(5, insert_text, i+1, text)
+    insert_text(0, short_text)
+    def show_long_text():
+        output.delete("1.0", ctk.END)
+        insert_text(0, "\n\nLonger Description: \n" + long_text)
+        btn.grid_forget()  # This will remove the button after it is clicked
+    btn = ctk.CTkButton(root, text="Show More", command=show_long_text)
+    btn.grid(row=5, rowspan=1, column=2, columnspan=1, sticky="n")
+
+
 
 
 
