@@ -49,3 +49,27 @@ def sentiment_analysis(text_content = ""):
     # # the language specified in the request or, if not specified,
     # # the automatically-detected language.
     # print(f"Language of the text: {response.language_code}")
+    
+# Returns more information along with the sentiment
+def annotate_text(text_content = ""):
+    client = return_client_sent(GOOGLE_CLOUD_API, "HooHacks2024")
+    document_type_in_plain_text = language_v2.Document.Type.PLAIN_TEXT
+    language_code = "en"
+    document = {
+        "content": text_content,
+        "type_": document_type_in_plain_text,
+        "language_code": language_code,
+    }
+
+    encoding_type = language_v2.EncodingType.UTF8
+    
+    features = {
+        "extract_entities": True,
+        "extract_document_sentiment": True,
+        "classify_text": True,
+        "moderate_text": True
+    }
+    
+    response = client.annotate_text(request={"document": document, "features": features, "encoding_type": encoding_type})
+    
+    return response.document_sentiment, response.categories, response.moderation_categories
