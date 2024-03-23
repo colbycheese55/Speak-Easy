@@ -36,7 +36,7 @@ def make_perplexity_call(language, phrase):
     # print(response)
     answer = (response.choices[0].message.content)
     responses = answer.strip().split("404_404")
-    # print(responses)
+    print(responses)
     
     return responses
 
