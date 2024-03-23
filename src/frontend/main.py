@@ -36,12 +36,21 @@ rightPanel = ctk.CTkFrame(root, width=300, height=700)
 rightPanel.grid(row=1, rowspan=5, column=3, columnspan=1, padx=40, pady=40)
 
 
-combobox = ctk.CTkComboBox(rightPanel, values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
-combobox.set("English")
-combobox.pack()
+labelIn = ctk.CTkLabel(rightPanel, text="Input Language", font=("Franklin Gothic Heavy", 24), pady=10)
+labelIn.grid(row=1, sticky="n")
+comboboxIn = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
+comboboxIn.set("English")
+comboboxIn.grid(row=2, rowspan=1, sticky="n", pady=20)
+labelOut = ctk.CTkLabel(rightPanel, text="Output Language", font=("Franklin Gothic Heavy", 24), pady=10)
+labelOut.grid(row=3, sticky="n")
+comboboxOut = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
+comboboxOut.set("English")
+comboboxOut.grid(row=4, rowspan=1, sticky="n", pady=20)
+_ = ctk.CTkLabel(rightPanel, text="", width=300, height=500)
+_.grid(row=5, rowspan=1)
 
 # Middle Panel
-entry = ctk.CTkTextbox(root, width=400, height=80, wrap="word", font=("Algerian", 20, "italic"))
+entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=("Algerian", 20, "italic"))
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
@@ -60,7 +69,8 @@ def processInput(*_) -> None:
     attributes = {"stuff": "things"}
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
-    summary = perplexity.make_perplexity_call("english", input)
+    language = comboboxOut.get()
+    summary = perplexity.make_perplexity_call(language, input)
     out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(1, (f"{input[:10]}...", out))
