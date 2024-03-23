@@ -83,7 +83,7 @@ entry.bind("<Return>", processInput)
 enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
-output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16), wrap="word")
+output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 16), wrap="word")
 def printOutput(text: str, clear: bool) -> None:
     if clear:
         output.delete("1.0", ctk.END)
@@ -93,21 +93,19 @@ def printOutput(text: str, clear: bool) -> None:
             output.insert(ctk.END, text[i])
             root.after(5, insert_text, i+1, text)
     insert_text(0, short_text)
+
     def show_long_text():
         output.delete("1.0", ctk.END)
         insert_text(0, "\n\nLonger Description: \n" + long_text)
-        btn.grid_forget()  # This will remove the button after it is clicked
+        btn.configure(text="Show Less", command=show_short_text)  # Change the button text and command
+
+    def show_short_text():
+        output.delete("1.0", ctk.END)
+        insert_text(0, short_text)
+        btn.configure(text="Show More", command=show_long_text)  # Change the button text and command back
+
     btn = ctk.CTkButton(root, text="Show More", command=show_long_text)
-    btn.grid(row=5, rowspan=1, column=2, columnspan=1, sticky="n")
-
-
-
-
-
-
-
-
-
+    btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
 
 
 if __name__ == "__main__":
