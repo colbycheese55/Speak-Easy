@@ -34,6 +34,11 @@ def updateChatListing() -> None:
 rightPanel = ctk.CTkFrame(root, width=300, height=700)
 rightPanel.grid(row=1, rowspan=5, column=3, columnspan=1, padx=40, pady=40)
 
+
+combobox = ctk.CTkComboBox(rightPanel, values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
+combobox.set("English")
+combobox.pack()
+
 # Middle Panel
 entry = ctk.CTkTextbox(root, width=400, height=80, wrap="word", font=("Algerian", 20, "italic"))
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
