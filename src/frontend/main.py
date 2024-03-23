@@ -10,10 +10,24 @@ import perplexity
 root = ctk.CTk()
 root.title("HooHacks24")
 previousChats = list()
+previousChatsBtns = list()
 
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=5, column=1, columnspan=1, padx=40, pady=40)
+
+historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Gothic Heavy", 24))
+
+def updateChatListing() -> None:
+    if previousChatsBtns is not None:
+        for btn in previousChatsBtns:
+            btn.grid_forget()
+    historyLabel.grid(row=1, rowspan=1, sticky="n")
+    for i in range(len(previousChats)):
+        btn = ctk.CTkButton(leftPanel, text=previousChats[i][0], font=("Courier New", 16), width = 150, height=30)
+        btn.grid(row=(i+2), rowspan=1, sticky="n", pady=20)
+        previousChatsBtns.append(btn)
+
 
 
 # Right Panel
@@ -41,20 +55,21 @@ def processInput(*_) -> None:
     attributes = {"stuff": "things"}
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
-    #summary = perplexitySummary(input)
-    #summaries = perspective.make_perplexity_call("english", input)
-    summary = "stuff"
-    printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}")
+    summary = perplexity.make_perplexity_call("english", input)
+    out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    printOutput(out)
+    previousChats.insert(1, (f"{input[:10]}...", out))
+    updateChatListing()
 
 entry.bind("<Return>", processInput)
 
 enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
-output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16))
+output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16), wrap="word")
 def printOutput(text: str) -> None:
     for i in range(len(text)):
-        root.after(20 * i, lambda char=text[i]: output.insert(ctk.END, char))
+        root.after(5 * i, lambda char=text[i]: output.insert(ctk.END, char))
 
 
 
@@ -68,9 +83,3 @@ if __name__ == "__main__":
     root.mainloop()
 
 
-class Chat:
-    def __init__(this, text: str) -> None:
-        this.text = text
-
-    def getText(this) -> str:
-        return this.text

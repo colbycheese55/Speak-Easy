@@ -1,4 +1,5 @@
 .venv/
 src/frontend/__pycache__/
+src/backend/__pycache__
 keys.json
 .env
