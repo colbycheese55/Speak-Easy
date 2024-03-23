@@ -1,2 +1,3 @@
 .venv/
+src/frontend/__pycache__/
 keys.json
