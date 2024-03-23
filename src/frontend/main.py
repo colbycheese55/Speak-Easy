@@ -13,24 +13,19 @@ rightPanel = ctk.CTkFrame(root, width=300, height=700)
 rightPanel.grid(row=1, rowspan=5, column=3, columnspan=1, padx=40, pady=40)
 
 # Middle Panel
-entry = ctk.CTkTextbox(root, width=400, height=80, wrap="word")
+entry = ctk.CTkTextbox(root, width=400, height=80, wrap="word", font=("Algerian", 20, "italic"))
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
     entry.delete("1.0", ctk.END)
+    entry.configure(font=("Courier New", 16))
     entry.unbind("<Button-1>")
 entry.bind("<Button-1>", startEntry)
 
-output = ctk.CTkTextbox(root, width=400, height=600)
-def printOutput(text: str) -> None:
-    for i in range(len(text)):
-        root.after(20 * i, lambda char=text[i]: output.insert(ctk.END, char))
-
-
 def processInput(*_) -> None:
     label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20)
-    label.grid(row=2, rowspan=1, column=2, columnspan=1)
-    output.grid(row=3, rowspan=4, column=2, columnspan=1)
+    label.grid(row=3, rowspan=1, column=2, columnspan=1)
+    output.grid(row=4, rowspan=4, column=2, columnspan=1)
     output.delete("1.0", ctk.END)
 
     input = entry.get("1.0", ctk.END)
@@ -43,6 +38,17 @@ def processInput(*_) -> None:
     printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary}")
 
 entry.bind("<Return>", processInput)
+
+enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
+enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
+
+output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16))
+def printOutput(text: str) -> None:
+    for i in range(len(text)):
+        root.after(20 * i, lambda char=text[i]: output.insert(ctk.END, char))
+
+
+
 
 
 
