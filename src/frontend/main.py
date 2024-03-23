@@ -91,20 +91,20 @@ def printOutput(text: str, clear: bool) -> None:
     def insert_text(i, text):
         if i < len(text):
             output.insert(ctk.END, text[i])
-            root.after(5, insert_text, i+1, text)
+            root.after(3, insert_text, i+1, text)
     insert_text(0, short_text)
 
     def show_long_text():
         output.delete("1.0", ctk.END)
         insert_text(0, "\n\nLonger Description: \n" + long_text)
-        btn.configure(text="Show Less", command=show_short_text)  # Change the button text and command
+        btn.configure(text="More detailed explanation", command=show_short_text)  # Change the button text and command
 
     def show_short_text():
         output.delete("1.0", ctk.END)
         insert_text(0, short_text)
         btn.configure(text="Show More", command=show_long_text)  # Change the button text and command back
 
-    btn = ctk.CTkButton(root, text="Show More", command=show_long_text)
+    btn = ctk.CTkButton(root, text="Less concise explanation", command=show_long_text)
     btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
 
 
