@@ -4,15 +4,17 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-import perspective
+#import perspective
 
 
 root = ctk.CTk()
 root.title("HooHacks24")
+previousChats = list()
 
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=5, column=1, columnspan=1, padx=40, pady=40)
+
 
 # Right Panel
 rightPanel = ctk.CTkFrame(root, width=300, height=700)
@@ -29,7 +31,7 @@ def startEntry(*_) -> None:
 entry.bind("<Button-1>", startEntry)
 
 def processInput(*_) -> None:
-    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20)
+    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=("Franklin Gothic Heavy", 24))
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
     output.delete("1.0", ctk.END)
@@ -40,9 +42,9 @@ def processInput(*_) -> None:
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
     #summary = perplexitySummary(input)
-    summaries = perspective.make_perplexity_call("english", input)
+    #summaries = perspective.make_perplexity_call("english", input)
     summary = "stuff"
-    printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summaries[0]}")
+    printOutput(f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}")
 
 entry.bind("<Return>", processInput)
 
@@ -64,3 +66,11 @@ def printOutput(text: str) -> None:
 
 if __name__ == "__main__":
     root.mainloop()
+
+
+class Chat:
+    def __init__(this, text: str) -> None:
+        this.text = text
+
+    def getText(this) -> str:
+        return this.text
