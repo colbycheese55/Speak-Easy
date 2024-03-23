@@ -69,7 +69,7 @@ def processInput(*_) -> None:
     attributes = {"stuff": "things"}
     attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
 
-    language = combobox.get()
+    language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
     out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
