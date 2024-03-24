@@ -98,6 +98,11 @@ def processInput(*_) -> None:
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
+    rerun = 0
+    while(rerun < 20 and len(summary) < 2):
+        summary = perplexity.make_perplexity_call(language, input)
+        rerun += 1
+        
     out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
