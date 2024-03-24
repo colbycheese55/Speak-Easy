@@ -1,4 +1,4 @@
-# Speak-easy
+# Speak Easy
 
 ## Description
 Speak-easy serves as a simple and interactive application tailored for decoding slang terms, corporate jargon, and social conventions, offering clear explanations and translations. Designed with bilingual individuals in mind, it extends its utility to anyone seeking clarity on colloquialisms and demystifying business-specific language.
