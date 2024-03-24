@@ -126,14 +126,14 @@ def processInput(*_) -> None:
     for i, attribute in enumerate(attributes):
         score = analysis[str(attribute)] / 100  # Normalize score to a value between 0 and 1
 
-        title_label = ctk.CTkLabel(master=progressFrame, text=attribute_titles[attribute], font=("Courier New", 16))
+        # Combine the attribute name and the rounded score in one label
+        title_label = ctk.CTkLabel(master=progressFrame,
+                                   text=f"{attribute_titles[attribute]}: {round(score * 100)}/100",
+                                   font=("Courier New", 16))
         progressbar = ctk.CTkProgressBar(master=progressFrame, width=200, height=20)
         progressbar.set(score)
 
-        # Display the score on the progress bar
-        score_label = ctk.CTkLabel(master=progressFrame, text=f"{score * 100:.2f}/100", font=("Courier New", 16))
-
-        toxicity_widgets.extend([title_label, progressbar, score_label])
+        toxicity_widgets.extend([title_label, progressbar])
 
     # Create progress bars for sentiment
     emotion_scores = {
@@ -156,14 +156,13 @@ def processInput(*_) -> None:
 
     starting_row = len(attributes) * 2
     for i, (emotion, score) in enumerate(emotion_scores.items()):
-        title_label = ctk.CTkLabel(master=progressFrame, text=attribute_titles[emotion], font=("Courier New", 16))
+        # Combine the emotion name and the rounded score in one label
+        title_label = ctk.CTkLabel(master=progressFrame, text=f"{attribute_titles[emotion]}: {round(score * 100)}/100",
+                                   font=("Courier New", 16))
         progressbar = ctk.CTkProgressBar(master=progressFrame, width=200, height=20)
         progressbar.set(score)
 
-        # Display the score on the progress bar
-        score_label = ctk.CTkLabel(master=progressFrame, text=f"{score * 100:.2f}/100", font=("Courier New", 16))
-
-        sentiment_widgets.extend([title_label, progressbar, score_label])
+        sentiment_widgets.extend([title_label, progressbar])
 
     # Function to toggle the visibility of toxicity progress bars
     def toggle_toxicity_bars():
