@@ -11,6 +11,7 @@ from perspective import Attributes
 
 satoshiFont = ("Satoshi", 24)
 satoshiBold = ("Satoshi", 24, "bold")
+satoshiBoldSmall = ("Satoshi", 20, "bold")
 satoshiLight = ("Satoshi", 20, "italic")
 
 
@@ -83,21 +84,21 @@ def processInput(*_) -> None:
     #attributes = sentimentAnalysis(input)
     emotions = sentiment_analysis.ibm_analysis(input)
     sentiment = {
-        "Sentiment Score": "%" + "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100),
+        "Sentiment Score": "{:.2f}%".format(sentiment_analysis.sentiment_analysis(input)*100),
     }
     emotion = {
-        "Sadness": "%" + "{:.2f}".format(emotions["sadness"]*100),
-        "Joy": "%" + "{:.2f}".format(emotions["joy"]*100),
-        "Fear": "%" + "{:.2f}".format(emotions["fear"]*100),
-        "Disgust": "%" + "{:.2f}".format(emotions["disgust"]*100),
-        "Anger": "%" + "{:.2f}".format(emotions["anger"]*100)
+        "Sadness": "{:.2f}%".format(emotions["sadness"]*100),
+        "Joy": "{:.2f}%".format(emotions["joy"]*100),
+        "Fear": "{:.2f}%".format(emotions["fear"]*100),
+        "Disgust": "{:.2f}%".format(emotions["disgust"]*100),
+        "Anger": "{:.2f}%".format(emotions["anger"]*100)
     }
     sentiment = "\n".join([f"{key}: {sentiment[key]}" for key in sentiment])
     emotion = "\n".join([f"{key}: {emotion[key]}" for key in emotion])
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
@@ -121,14 +122,14 @@ def printOutput(text: str, clear: bool) -> None:
     def show_long_text():
         output.delete("1.0", ctk.END)
         insert_text(0, "\n\nLonger Description: \n" + long_text)
-        btn.configure(text="Show Less", command=show_short_text)  # Change the button text and command
+        btn.configure(text="Show Less", command=show_short_text, font=satoshiBoldSmall)  # Change the button text and command
 
     def show_short_text():
         output.delete("1.0", ctk.END)
         insert_text(0, short_text)
-        btn.configure(text="Show More", command=show_long_text)  # Change the button text and command back
+        btn.configure(text="Show More", command=show_long_text, font=satoshiBoldSmall)  # Change the button text and command back
 
-    btn = ctk.CTkButton(root, text="Show More", command=show_long_text)
+    btn = ctk.CTkButton(root, text="Show More", command=show_long_text, font=satoshiBoldSmall)
     btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
 
 
