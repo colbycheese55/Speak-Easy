@@ -20,7 +20,7 @@ def ibm_analysis(text_content = ""):
     )
 
     natural_language_understanding.set_service_url(IBM_URL)
-    response = natural_language_understanding.analyze(text=text_content, features=Features(emotion=EmotionOptions())).get_result()
+    response = natural_language_understanding.analyze(text=text_content, features=Features(emotion=EmotionOptions()), language="en").get_result()
     
     return response["emotion"]["document"]["emotion"]  # returns a dictionary with keys "sadness", "joy", "fear", "disgust", "anger"
 
@@ -53,7 +53,7 @@ def sentiment_analysis(text_content = ""):
         request={"document": document, "encoding_type": encoding_type}
     )
     
-    return response.document_sentiment.score, response.document_sentiment.magnitude
+    return response.document_sentiment.score
     
 # Returns more information along with the sentiment
 def annotate_text(text_content = ""):
