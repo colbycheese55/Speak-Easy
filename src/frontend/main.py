@@ -13,6 +13,12 @@ root.title("HooHacks24")
 previousChats = list()
 previousChatsBtns = list()
 
+root.columnconfigure(1, weight=1)
+root.columnconfigure(2, weight=2)
+root.columnconfigure(3, weight=1)
+
+ctk.set_default_color_theme("dark-blue")
+
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
@@ -95,19 +101,29 @@ entry.bind("<Return>", processInput)
 enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
-output = ctk.CTkTextbox(root, width=400, height=600, font=("Courier New", 16), wrap="word")
+output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 16), wrap="word")
 def printOutput(text: str, clear: bool) -> None:
     if clear:
         output.delete("1.0", ctk.END)
-    for i in range(len(text)):
-        root.after(5 * i, lambda char=text[i]: output.insert(ctk.END, char))
+    short_text, long_text = text.split("\n\nLonger Description: \n", 1)
+    def insert_text(i, text):
+        if i < len(text):
+            output.insert(ctk.END, text[i])
+            root.after(3, insert_text, i+1, text)
+    insert_text(0, short_text)
 
+    def show_long_text():
+        output.delete("1.0", ctk.END)
+        insert_text(0, "\n\nLonger Description: \n" + long_text)
+        btn.configure(text="More detailed explanation", command=show_short_text)  # Change the button text and command
 
+    def show_short_text():
+        output.delete("1.0", ctk.END)
+        insert_text(0, short_text)
+        btn.configure(text="Show More", command=show_long_text)  # Change the button text and command back
 
-
-
-
-
+    btn = ctk.CTkButton(root, text="Less concise explanation", command=show_long_text, font=("Franklin Gothic Heavy", 24))
+    btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
 
 
 if __name__ == "__main__":
