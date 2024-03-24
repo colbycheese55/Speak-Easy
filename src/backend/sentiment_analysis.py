@@ -53,7 +53,7 @@ def sentiment_analysis(text_content = ""):
         request={"document": document, "encoding_type": encoding_type}
     )
     
-    return response.document_sentiment.score, response.document_sentiment.magnitude
+    return response.document_sentiment.score
     
 # Returns more information along with the sentiment
 def annotate_text(text_content = ""):

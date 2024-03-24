@@ -5,6 +5,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 import perplexity
+import sentiment_analysis
 
 
 root = ctk.CTk()
@@ -68,12 +69,23 @@ def processInput(*_) -> None:
 
     input = entry.get("1.0", ctk.END).replace("\n", "")
     #attributes = sentimentAnalysis(input)
-    attributes = {"stuff": "things"}
-    attributes = "\n".join([f"{key}: {attributes[key]}" for key in attributes])
+    emotions = sentiment_analysis.ibm_analysis(input)
+    sentiment = {
+        "Sentiment Score": "%" + "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100),
+    }
+    emotion = {
+        "Sadness": "%" + "{:.2f}".format(emotions["sadness"]*100),
+        "Joy": "%" + "{:.2f}".format(emotions["joy"]*100),
+        "Fear": "%" + "{:.2f}".format(emotions["fear"]*100),
+        "Disgust": "%" + "{:.2f}".format(emotions["disgust"]*100),
+        "Anger": "%" + "{:.2f}".format(emotions["anger"]*100)
+    }
+    sentiment = "\n".join([f"{key}: {sentiment[key]}" for key in sentiment])
+    emotion = "\n".join([f"{key}: {emotion[key]}" for key in emotion])
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
