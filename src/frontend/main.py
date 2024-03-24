@@ -161,19 +161,11 @@ def processInput(*_) -> None:
 
     # Function to toggle the visibility of toxicity progress bars
     def toggle_toxicity_bars():
-        if toxicity_widgets[0].winfo_viewable():
-            toggle_toxicity_btn.configure(text="Show Toxicity Analysis")
-        else:
-            toggle_toxicity_btn.configure(text="Hide Toxicity Analysis")
         for widget in toxicity_widgets:
             widget.grid_forget() if widget.winfo_viewable() else widget.grid()
 
     # Function to toggle the visibility of sentiment progress bars
     def toggle_sentiment_bars():
-        if sentiment_widgets[0].winfo_viewable():
-            toggle_sentiment_btn.configure(text="Show Sentiment Analysis")
-        else:
-            toggle_sentiment_btn.configure(text="Hide Sentiment Analysis")
         for widget in sentiment_widgets:
             widget.grid_forget() if widget.winfo_viewable() else widget.grid()
 
