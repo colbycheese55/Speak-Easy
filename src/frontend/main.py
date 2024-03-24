@@ -6,6 +6,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 import perplexity
 import sentiment_analysis
+#import perspect
+from perspective import Attributes
 
 
 root = ctk.CTk()
