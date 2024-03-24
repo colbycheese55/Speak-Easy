@@ -6,6 +6,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 import perplexity
 import sentiment_analysis
+#import perspect
+from perspective import Attributes
 
 
 root = ctk.CTk()
@@ -91,7 +93,7 @@ def processInput(*_) -> None:
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
