@@ -1,17 +1,19 @@
 # Speak-easy
 
-Speak-easy serves as a simple and interactive application tailored for decoding slang terms, corporate jargon, and social conventions, offering clear explanations and translations. Designed with bilingual individuals in mind, it extends its utility to anyone seeking clarity on colloquialisms and demistfying business-specific language.
-
 ## Description
-
-### Dependencies
+Speak-easy serves as a simple and interactive application tailored for decoding slang terms, corporate jargon, and social conventions, offering clear explanations and translations. Designed with bilingual individuals in mind, it extends its utility to anyone seeking clarity on colloquialisms and demystifying business-specific language.
 
 ### Installing
+1. Clone this repo to your computer by running `git clone [URL]`
+2. `cd` into the repo and run `py -m venv .venv`. Note that the python command might be different for your machine (ex. python, python3)
+3. Open the virtual environment by running `.\.venv\Scripts\activate`. This command may be different on your machine.
+4. Install all dependencies by running `pip install -r requirements.txt`
+5. Acquire API keys and put them in a `.env` file. If you are a hackathon judge, contact us and we will provide API keys
+
 
 ### Executing program
-```
-code blocks for commands
-```
+Start the program by running `py src/frontend/main.py`
+
 ## Authors
 
 * Kevin Shi
@@ -35,3 +37,7 @@ APIs Used:
 * Google Cloud Natural Language - https://cloud.google.com/natural-language?hl=en
 * IBM Natural Language - https://cloud.ibm.com/apidocs/natural-language-understanding?code=python
 * Perspective - https://perspectiveapi.com/
+
+Generative AI Used:
+* ChatGPT
+* GitHub CoPilot
