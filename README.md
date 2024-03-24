@@ -33,5 +33,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 APIs Used:
 * Perplexity - https://docs.perplexity.ai/
 * Google Cloud Natural Language - https://cloud.google.com/natural-language?hl=en
+* IBM Natural Language - https://cloud.ibm.com/apidocs/natural-language-understanding?code=python
 * Perspective - https://perspectiveapi.com/
-* IBM Emotion - https://cloud.ibm.com/apidocs/natural-language-understanding?code=python
