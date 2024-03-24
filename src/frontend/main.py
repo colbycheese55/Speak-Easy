@@ -32,10 +32,12 @@ for i in range(10):
     btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 20), text=f"", state="disabled", fg_color="transparent")
     btn.grid(row=i+2, pady=15)
     previousChatsBtns.append(btn)
+spacer = ctk.CTkLabel(leftPanel, height=80, text="")
+spacer.grid(row=12)
 
 def updateChatListing() -> None:
     for i in range(len(previousChats)):
-        cmd = lambda text=previousChats[i][1]: printOutput(text, True)
+        cmd = lambda text=previousChats[i][1]: printOutput(text, True, True)
         previousChatsBtns[i].configure(state="normal", text=previousChats[i][0], command=cmd, fg_color="yellow", text_color="black")
     if len(previousChats) >= 10:
         previousChats.pop()
@@ -46,19 +48,14 @@ def updateChatListing() -> None:
 rightPanel = ctk.CTkFrame(root, width=300, height=700)
 rightPanel.grid(row=1, rowspan=10, column=3, columnspan=1, padx=40, pady=40)
 
-
-labelIn = ctk.CTkLabel(rightPanel, text="Input Language", font=("Franklin Gothic Heavy", 24), pady=10)
-labelIn.grid(row=1, sticky="n")
-comboboxIn = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
-comboboxIn.set("English")
-comboboxIn.grid(row=2, rowspan=1, sticky="n", pady=20)
 labelOut = ctk.CTkLabel(rightPanel, text="Output Language", font=("Franklin Gothic Heavy", 24), pady=10)
 labelOut.grid(row=3, sticky="n")
 comboboxOut = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
 comboboxOut.set("English")
 comboboxOut.grid(row=4, rowspan=1, sticky="n", pady=20)
-_ = ctk.CTkLabel(rightPanel, text="", width=300, height=500)
-_.grid(row=5, rowspan=1)
+
+spacer = ctk.CTkLabel(rightPanel, text="", width=300, height=700)
+spacer.grid(row=5, rowspan=1)
 
 # Middle Panel
 entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=("Algerian", 20, "italic"))
@@ -93,7 +90,7 @@ def processInput(*_) -> None:
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n\n{sentiment} \n{emotion} \n\nNatural Language Summary: \n\n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
@@ -104,19 +101,22 @@ enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", comman
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
 output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 20), wrap="word")
-def printOutput(text: str, clear: bool) -> None:
+def printOutput(text: str, clear: bool, immediate=False) -> None:
     if clear:
         output.delete("1.0", ctk.END)
     short_text, long_text = text.split("\n\nLonger Description: \n", 1)
     def insert_text(i, text):
-        if i < len(text):
-            output.insert(ctk.END, text[i])
-            root.after(5, insert_text, i+1, text)
+        if not immediate:
+            if i < len(text):
+                output.insert(ctk.END, text[i])
+                root.after(5, insert_text, i+1, text)
+        else:
+            output.insert(ctk.END, text)
     insert_text(0, short_text)
 
     def show_long_text():
         output.delete("1.0", ctk.END)
-        insert_text(0, "\n\nLonger Description: \n" + long_text)
+        insert_text(0, "Longer Description: " + long_text)
         btn.configure(text="Show Less", command=show_short_text)  # Change the button text and command
 
     def show_short_text():
