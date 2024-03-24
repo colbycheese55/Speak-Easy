@@ -16,6 +16,8 @@ root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=2)
 root.columnconfigure(3, weight=1)
 
+ctk.set_default_color_theme("dark-blue")
+
 # Left Panel
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
