@@ -9,6 +9,10 @@ import sentiment_analysis
 #import perspect
 from perspective import Attributes
 
+satoshiFont = ("Satoshi", 24)
+satoshiBold = ("Satoshi", 24, "bold")
+satoshiLight = ("Satoshi", 20, "italic")
+
 
 root = ctk.CTk()
 root.title("HooHacks24")
@@ -25,11 +29,11 @@ ctk.set_default_color_theme("dark-blue")
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
 
-historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Gothic Heavy", 24), width=300)
+historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=satoshiBold, width=300)
 historyLabel.grid(row=1, rowspan=1, sticky="n")
 
 for i in range(10):
-    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 20), text=f"", state="disabled", fg_color="transparent")
+    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"", state="disabled", fg_color="transparent")
     btn.grid(row=i+2, pady=15)
     previousChatsBtns.append(btn)
 spacer = ctk.CTkLabel(leftPanel, height=80, text="")
@@ -58,17 +62,17 @@ spacer = ctk.CTkLabel(rightPanel, text="", width=300, height=700)
 spacer.grid(row=5, rowspan=1)
 
 # Middle Panel
-entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=("Algerian", 20, "italic"))
+entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=satoshiLight)
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
     entry.delete("1.0", ctk.END)
-    entry.configure(font=("Courier New", 20))
+    entry.configure(font=("Courier New", 16))
     entry.unbind("<Button-1>")
 entry.bind("<Button-1>", startEntry)
 
 def processInput(*_) -> None:
-    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=("Franklin Gothic Heavy", 24))
+    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=satoshiBold)
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
 
@@ -90,14 +94,14 @@ def processInput(*_) -> None:
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n\n{sentiment} \n{emotion} \n\nNatural Language Summary: \n\n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n{sentiment}{emotion} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
 
 entry.bind("<Return>", processInput)
 
-enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
+enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=satoshiBold)
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
 output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 20), wrap="word")
@@ -116,7 +120,7 @@ def printOutput(text: str, clear: bool, immediate=False) -> None:
 
     def show_long_text():
         output.delete("1.0", ctk.END)
-        insert_text(0, "Longer Description: " + long_text)
+        insert_text(0, "Longer Description: \n" + long_text)
         btn.configure(text="Show Less", command=show_short_text)  # Change the button text and command
 
     def show_short_text():
