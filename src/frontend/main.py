@@ -26,14 +26,14 @@ historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Goth
 historyLabel.grid(row=1, rowspan=1, sticky="n")
 
 for i in range(10):
-    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"Chat {i+1}", state="disabled")
+    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"", state="disabled", fg_color="transparent")
     btn.grid(row=i+2, pady=15)
     previousChatsBtns.append(btn)
 
 def updateChatListing() -> None:
     for i in range(len(previousChats)):
         cmd = lambda text=previousChats[i][1]: printOutput(text, True)
-        previousChatsBtns[i].configure(state="normal", text=previousChats[i][0], command=cmd)
+        previousChatsBtns[i].configure(state="normal", text=previousChats[i][0], command=cmd, fg_color="yellow", text_color="black")
     if len(previousChats) >= 10:
         previousChats.pop()
 
@@ -112,6 +112,9 @@ def printOutput(text: str, clear: bool) -> None:
 
     btn = ctk.CTkButton(root, text="Less concise explanation", command=show_long_text, font=("Franklin Gothic Heavy", 24))
     btn.grid(row=8, rowspan=1, column=2, columnspan=1, sticky="n", pady=20)  # Added pady=20
+
+
+root.bind("<Control-w>", lambda _: root.destroy())
 
 
 if __name__ == "__main__":
