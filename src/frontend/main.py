@@ -29,7 +29,7 @@ historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Goth
 historyLabel.grid(row=1, rowspan=1, sticky="n")
 
 for i in range(10):
-    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"", state="disabled", fg_color="transparent")
+    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 20), text=f"", state="disabled", fg_color="transparent")
     btn.grid(row=i+2, pady=15)
     previousChatsBtns.append(btn)
 
@@ -66,7 +66,7 @@ entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
     entry.delete("1.0", ctk.END)
-    entry.configure(font=("Courier New", 16))
+    entry.configure(font=("Courier New", 20))
     entry.unbind("<Button-1>")
 entry.bind("<Button-1>", startEntry)
 
@@ -103,7 +103,7 @@ entry.bind("<Return>", processInput)
 enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
-output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 16), wrap="word")
+output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 20), wrap="word")
 def printOutput(text: str, clear: bool) -> None:
     if clear:
         output.delete("1.0", ctk.END)
