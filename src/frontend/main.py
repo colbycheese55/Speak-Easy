@@ -6,8 +6,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 import perplexity
 import sentiment_analysis
-#import perspect
 from perspective import Attributes
+from perspect import analyze_text
 
 
 root = ctk.CTk()
@@ -74,7 +74,7 @@ def processInput(*_) -> None:
     label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=("Franklin Gothic Heavy", 24))
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
-    #comment
+
     input = entry.get("1.0", ctk.END).replace("\n", "")
     emotions = sentiment_analysis.ibm_analysis(input)
     sentiment = {
@@ -96,6 +96,22 @@ def processInput(*_) -> None:
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
+
+    # Analyze the text
+    attributes = [Attributes.TOXICITY, Attributes.INSULT, Attributes.INFLAMMATORY]
+    analysis = analyze_text(input, attributes)
+    print(analysis)
+    # Create meters for each attribute
+    # Assuming root_tk and rightPanel are defined
+    row_start = 5  # Adjust this value based on where you want the meters to start
+    for i, attribute in enumerate(attributes):
+        print(str(attribute))
+        score = analysis[str(attribute)] / 100  # Normalize score to a value between 0 and 1
+        print(score)
+        progressbar = ctk.CTkProgressBar(master=rightPanel, width=200, height=20)
+        progressbar.set_value(score)
+        progressbar.grid(row=row_start + i, column=1, sticky='w', pady=10)
+
 
 entry.bind("<Return>", processInput)
 
