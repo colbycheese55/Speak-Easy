@@ -72,7 +72,7 @@ def processInput(*_) -> None:
     label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=("Franklin Gothic Heavy", 24))
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
-
+    #comment
     input = entry.get("1.0", ctk.END).replace("\n", "")
     #attributes = sentimentAnalysis(input)
     emotions = sentiment_analysis.ibm_analysis(input)
