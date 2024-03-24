@@ -130,7 +130,10 @@ def processInput(*_) -> None:
         progressbar = ctk.CTkProgressBar(master=progressFrame, width=200, height=20)
         progressbar.set(score)
 
-        toxicity_widgets.extend([title_label, progressbar])
+        # Display the score on the progress bar
+        score_label = ctk.CTkLabel(master=progressFrame, text=f"{score * 100:.2f}/100", font=("Courier New", 16))
+
+        toxicity_widgets.extend([title_label, progressbar, score_label])
 
     # Create progress bars for sentiment
     emotion_scores = {
@@ -157,7 +160,10 @@ def processInput(*_) -> None:
         progressbar = ctk.CTkProgressBar(master=progressFrame, width=200, height=20)
         progressbar.set(score)
 
-        sentiment_widgets.extend([title_label, progressbar])
+        # Display the score on the progress bar
+        score_label = ctk.CTkLabel(master=progressFrame, text=f"{score * 100:.2f}/100", font=("Courier New", 16))
+
+        sentiment_widgets.extend([title_label, progressbar, score_label])
 
     # Function to toggle the visibility of toxicity progress bars
     def toggle_toxicity_bars():
