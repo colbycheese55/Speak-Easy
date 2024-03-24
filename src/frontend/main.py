@@ -78,14 +78,14 @@ def processInput(*_) -> None:
     input = entry.get("1.0", ctk.END).replace("\n", "")
     emotions = sentiment_analysis.ibm_analysis(input)
     sentiment = {
-        "Sentiment Score": "%" + "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100),
+        "Sentiment Score": "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100) + "%",
     }
     emotion = {
-        "Sadness": "%" + "{:.2f}".format(emotions["sadness"]*100),
-        "Joy": "%" + "{:.2f}".format(emotions["joy"]*100),
-        "Fear": "%" + "{:.2f}".format(emotions["fear"]*100),
-        "Disgust": "%" + "{:.2f}".format(emotions["disgust"]*100),
-        "Anger": "%" + "{:.2f}".format(emotions["anger"]*100)
+        "Sadness": "{:.2f}".format(emotions["sadness"]*100) + "%",
+        "Joy": "{:.2f}".format(emotions["joy"]*100) + "%",
+        "Fear": "{:.2f}".format(emotions["fear"]*100) + "%",
+        "Disgust": "{:.2f}".format(emotions["disgust"]*100) + "%",
+        "Anger": "{:.2f}".format(emotions["anger"]*100) + "%"
     }
     sentiment = "\n".join([f"{key}: {sentiment[key]}" for key in sentiment])
     emotion = "\n".join([f"{key}: {emotion[key]}" for key in emotion])
