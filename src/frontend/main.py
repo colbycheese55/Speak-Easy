@@ -76,7 +76,6 @@ def processInput(*_) -> None:
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
 
     input = entry.get("1.0", ctk.END).replace("\n", "")
-    #attributes = sentimentAnalysis(input)
     emotions = sentiment_analysis.ibm_analysis(input)
     sentiment = {
         "Sentiment Score": "%" + "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100),
