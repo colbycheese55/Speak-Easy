@@ -9,6 +9,10 @@ import sentiment_analysis
 #import perspect
 from perspective import Attributes
 
+satoshiFont = ("Satoshi", 24)
+satoshiBold = ("Satoshi", 24, "bold")
+satoshiLight = ("Satoshi", 20, "italic")
+
 
 root = ctk.CTk()
 root.title("HooHacks24")
@@ -25,11 +29,11 @@ ctk.set_default_color_theme("dark-blue")
 leftPanel = ctk.CTkFrame(root, width=300, height=700)
 leftPanel.grid(row=1, rowspan=10, column=1, columnspan=1, padx=40, pady=40, sticky="n")
 
-historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=("Franklin Gothic Heavy", 24), width=300)
+historyLabel = ctk.CTkLabel(leftPanel, text="Chat History", font=satoshiBold, width=300)
 historyLabel.grid(row=1, rowspan=1, sticky="n")
 
 for i in range(10):
-    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 20), text=f"", state="disabled", fg_color="transparent")
+    btn = ctk.CTkButton(leftPanel, width=200, height=40, font=("Courier New", 16), text=f"", state="disabled", fg_color="transparent")
     btn.grid(row=i+2, pady=15)
     previousChatsBtns.append(btn)
 
@@ -47,12 +51,12 @@ rightPanel = ctk.CTkFrame(root, width=300, height=700)
 rightPanel.grid(row=1, rowspan=10, column=3, columnspan=1, padx=40, pady=40)
 
 
-labelIn = ctk.CTkLabel(rightPanel, text="Input Language", font=("Franklin Gothic Heavy", 24), pady=10)
+labelIn = ctk.CTkLabel(rightPanel, text="Input Language", font=satoshiBold, pady=10)
 labelIn.grid(row=1, sticky="n")
 comboboxIn = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
 comboboxIn.set("English")
 comboboxIn.grid(row=2, rowspan=1, sticky="n", pady=20)
-labelOut = ctk.CTkLabel(rightPanel, text="Output Language", font=("Franklin Gothic Heavy", 24), pady=10)
+labelOut = ctk.CTkLabel(rightPanel, text="Output Language", font=satoshiBold, pady=10)
 labelOut.grid(row=3, sticky="n")
 comboboxOut = ctk.CTkComboBox(rightPanel, state="readonly", values=["Arabic", "Chinese", "English", "French", "German", "Italian", "Japanesse", "Korean", "Portuguese", "Russian", "Spanish", "Tagalog", "Vietnamese"])
 comboboxOut.set("English")
@@ -61,48 +65,49 @@ _ = ctk.CTkLabel(rightPanel, text="", width=300, height=500)
 _.grid(row=5, rowspan=1)
 
 # Middle Panel
-entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=("Algerian", 20, "italic"))
+entry = ctk.CTkTextbox(root, width=700, height=80, wrap="word", font=satoshiLight)
 entry.grid(row=1, rowspan=1, column=2, columnspan=1, sticky="n", pady=40)
 entry.insert(ctk.END, "What do you want to translate today?")
 def startEntry(*_) -> None:
     entry.delete("1.0", ctk.END)
-    entry.configure(font=("Courier New", 20))
+    entry.configure(font=("Courier New", 16))
     entry.unbind("<Button-1>")
 entry.bind("<Button-1>", startEntry)
 
 def processInput(*_) -> None:
-    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=("Franklin Gothic Heavy", 24))
+    label = ctk.CTkLabel(root, width=400, height=20, text="Output", pady=20, font=satoshiBold)
     label.grid(row=3, rowspan=1, column=2, columnspan=1)
     output.grid(row=4, rowspan=4, column=2, columnspan=1)
 
     input = entry.get("1.0", ctk.END).replace("\n", "")
+    #attributes = sentimentAnalysis(input)
     emotions = sentiment_analysis.ibm_analysis(input)
     sentiment = {
-        "Sentiment Score": "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100) + "%",
+        "Sentiment Score": "%" + "{:.2f}".format(sentiment_analysis.sentiment_analysis(input)*100),
     }
     emotion = {
-        "Sadness": "{:.2f}".format(emotions["sadness"]*100) + "%",
-        "Joy": "{:.2f}".format(emotions["joy"]*100) + "%",
-        "Fear": "{:.2f}".format(emotions["fear"]*100) + "%",
-        "Disgust": "{:.2f}".format(emotions["disgust"]*100) + "%",
-        "Anger": "{:.2f}".format(emotions["anger"]*100) + "%"
+        "Sadness": "%" + "{:.2f}".format(emotions["sadness"]*100),
+        "Joy": "%" + "{:.2f}".format(emotions["joy"]*100),
+        "Fear": "%" + "{:.2f}".format(emotions["fear"]*100),
+        "Disgust": "%" + "{:.2f}".format(emotions["disgust"]*100),
+        "Anger": "%" + "{:.2f}".format(emotions["anger"]*100)
     }
     sentiment = "\n".join([f"{key}: {sentiment[key]}" for key in sentiment])
     emotion = "\n".join([f"{key}: {emotion[key]}" for key in emotion])
 
     language = comboboxOut.get()
     summary = perplexity.make_perplexity_call(language, input)
-    out = f"Sentiment Analysis: \n{sentiment} \n{emotion} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
+    out = f"Sentiment Analysis: \n{attributes} \n\nNatural Language Summary: \n{summary[0]}\n\nLonger Description: \n{summary[1]}"
     printOutput(out, True)
     previousChats.insert(0, (f"{input[:10]}...", out))
     updateChatListing()
 
 entry.bind("<Return>", processInput)
 
-enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=("Franklin Gothic Heavy", 24))
+enterBtn = ctk.CTkButton(root, width = 200, height=40, text="Translate!", command=processInput, font=satoshiBold)
 enterBtn.grid(row=2, rowspan=1, column=2, columnspan=1, sticky="n")
 
-output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 20), wrap="word")
+output = ctk.CTkTextbox(root, width=700, height=600, font=("Courier New", 16), wrap="word")
 def printOutput(text: str, clear: bool) -> None:
     if clear:
         output.delete("1.0", ctk.END)
